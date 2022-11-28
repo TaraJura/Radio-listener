@@ -14,5 +14,5 @@ ffmpeg -i filename.amr filename.mp3
 
 # send files to server
 
-scp filename.mp3 ubuntu20@192.168.87.165:sshmobile
+sshpass -p 'password' scp filename.mp3 ubuntu20@192.168.87.165:sshmobile
 

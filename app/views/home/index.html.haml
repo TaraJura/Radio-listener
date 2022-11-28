@@ -1,4 +1,5 @@
 - @transmitters.each do |transmitter|
   %div
     %h2
-      = transmitter.name
+      = link_to transmitter.audio.filename, rails_blob_path(transmitter.audio)
+
