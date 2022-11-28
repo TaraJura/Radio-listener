@@ -11,3 +11,8 @@ termux-microphone-record -q
 # convert files from .amr to .mp3
 
 ffmpeg -i filename.amr filename.mp3
+
+# send files to server
+
+scp filename.mp3 ubuntu20@192.168.87.165:sshmobile
+
