@@ -1,0 +1,45 @@
+cache:
+  - key:
+      files:
+        - Gemfile.lock
+    paths:
+      - vendor/bundle
+  - key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
+
+stages:
+  - lint
+  - test
+
+lint:
+  stage: lint
+  script:
+    - chruby ruby-2.7.5
+    - bundle config set --local path vendor/bundle
+    - bundle install -j $(nproc)
+    - bundle exec rubocop
+    - bundle exec haml-lint
+    - bundle exec brakeman
+    - bundle exec bundle-audit check --update
+
+test:
+  stage: test
+  variables:
+    DATABASE_USER: radio
+    DATABASE_NAME: radio
+    RAILS_ENV: test
+  script:
+    - export DATABASE_PASSWORD=$(pwgen -s 20 1)
+    - >-
+      sudo mysql
+      --defaults-file=/etc/mysql/debian.cnf
+      --execute="drop user IF EXISTS ${DATABASE_USER}@localhost;
+      create user ${DATABASE_USER}@localhost identified by '${DATABASE_PASSWORD}';
+      grant all on ${DATABASE_NAME}_test.* to ${DATABASE_USER}@localhost;"
+    - chruby ruby-2.7.5
+    - bundle config set --local deployment true
+    - bin/setup ${DATABASE_NAME} ${DATABASE_USER} ${DATABASE_PASSWORD}
+    - bundle exec rails javascript:build css:build spec
