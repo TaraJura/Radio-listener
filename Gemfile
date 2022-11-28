@@ -68,4 +68,5 @@ gem 'pry-rails'
 gem 'rails-i18n'
 
 # Use Redis for Action Cable
+gem 'image_processing', '>= 1.2'
 gem 'redis', '~> 4.0'
