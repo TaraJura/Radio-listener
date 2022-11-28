@@ -1,24 +1,13 @@
-# README
+# Termux - commands
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# start recording(15sec by default)
 
-Things you may want to cover:
+termux-microphone-record -e awr_wide -f filename.amr
 
-* Ruby version
+# stop recording (if its still recording)
 
-* System dependencies
+termux-microphone-record -q
 
-* Configuration
+# convert files from .amr to .mp3
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+ffmpeg -i filename.amr filename.mp3
